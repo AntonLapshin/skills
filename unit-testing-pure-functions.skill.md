@@ -1,115 +1,80 @@
 # SKILL: Unit Testing with Pure Functions
 
-## Context
-
-Use this SKILL when writing unit tests for frontend logic. The guiding principle is: extract any testable logic into pure functions and cover them with unit tests.
+Use when writing unit tests. Extract all testable logic into pure functions.
 
 ## Requirements
 
-- Extract business logic, data transformations, and calculations into pure functions
-- Keep components thin - they should orchestrate, not contain heavy logic
-- Unit tests must be fast, deterministic, and have no side effects
-- Test file naming: `<functionName>.test.ts` alongside the implementation
+- Extract logic into pure functions
+- Keep components thin (orchestration only)
+- Tests: fast, deterministic, no side effects
+- Test file: `<functionName>.test.ts` alongside implementation
 
-## Examples
-
-### Extracting Logic from Component
+## Example: Before & After
 
 **Before (hard to test):**
 ```tsx
-// RecipeCard.tsx - BAD: Logic mixed with UI
+// RecipeCard.tsx - Logic mixed with UI
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
-  const caloriesPerServing = recipe.totalCalories / recipe.servings;
-  const difficultyLabel = recipe.prepTime < 15 ? 'Easy' : recipe.prepTime < 30 ? 'Medium' : 'Hard';
-  const isVegetarian = recipe.ingredients.every(i => !i.containsMeat);
-  
-  return (
-    <div>
-      <h3>{recipe.name}</h3>
-      <p>{caloriesPerServing} cal/serving</p>
-      <span>{difficultyLabel}</span>
-      {isVegetarian && <span>Vegetarian</span>}
-    </div>
-  );
+  const calories = recipe.totalCalories / recipe.servings;
+  const difficulty = recipe.prepTime < 15 ? 'Easy' : recipe.prepTime < 30 ? 'Medium' : 'Hard';
+  return <div>{calories} cal/serving - {difficulty}</div>;
 };
 ```
 
 **After (testable):**
 ```tsx
 // recipeUtils.ts
-export const calculateCaloriesPerServing = (
-  totalCalories: number,
-  servings: number
-): number => {
+export const calcCalories = (total: number, servings: number): number => {
   if (servings <= 0) throw new Error('Servings must be positive');
-  return totalCalories / servings;
+  return total / servings;
 };
 
-export const getDifficultyLabel = (prepTime: number): string => {
+export const getDifficulty = (prepTime: number): string => {
   if (prepTime < 15) return 'Easy';
   if (prepTime < 30) return 'Medium';
   return 'Hard';
 };
 
-export const checkIsVegetarian = (ingredients: Ingredient[]): boolean => {
-  return ingredients.every(i => !i.containsMeat);
-};
-
 // recipeUtils.test.ts
 import { describe, it, expect } from 'vitest';
-import { calculateCaloriesPerServing, getDifficultyLabel, checkIsVegetarian } from './recipeUtils';
+import { calcCalories, getDifficulty } from './recipeUtils';
 
-describe('calculateCaloriesPerServing', () => {
-  it('calculates correctly for valid inputs', () => {
-    expect(calculateCaloriesPerServing(500, 2)).toBe(250);
-    expect(calculateCaloriesPerServing(600, 3)).toBe(200);
+describe('calcCalories', () => {
+  it('calculates correctly', () => {
+    expect(calcCalories(500, 2)).toBe(250);
+    expect(calcCalories(600, 3)).toBe(200);
   });
 
-  it('throws error for invalid servings', () => {
-    expect(() => calculateCaloriesPerServing(500, 0)).toThrow();
-    expect(() => calculateCaloriesPerServing(500, -1)).toThrow();
-  });
-});
-
-describe('getDifficultyLabel', () => {
-  it('returns Easy for prep time under 15 minutes', () => {
-    expect(getDifficultyLabel(10)).toBe('Easy');
-    expect(getDifficultyLabel(14)).toBe('Easy');
-  });
-
-  it('returns Medium for prep time 15-29 minutes', () => {
-    expect(getDifficultyLabel(15)).toBe('Medium');
-    expect(getDifficultyLabel(29)).toBe('Medium');
-  });
-
-  it('returns Hard for prep time 30+ minutes', () => {
-    expect(getDifficultyLabel(30)).toBe('Hard');
-    expect(getDifficultyLabel(60)).toBe('Hard');
+  it('throws on invalid servings', () => {
+    expect(() => calcCalories(500, 0)).toThrow();
   });
 });
 
-// RecipeCard.tsx - CLEAN: Component only orchestrates
-import { calculateCaloriesPerServing, getDifficultyLabel, checkIsVegetarian } from './recipeUtils';
+describe('getDifficulty', () => {
+  it('returns Easy for < 15 min', () => {
+    expect(getDifficulty(10)).toBe('Easy');
+  });
+  it('returns Medium for 15-29 min', () => {
+    expect(getDifficulty(20)).toBe('Medium');
+  });
+  it('returns Hard for 30+ min', () => {
+    expect(getDifficulty(30)).toBe('Hard');
+  });
+});
 
-export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
-  const caloriesPerServing = calculateCaloriesPerServing(recipe.totalCalories, recipe.servings);
-  const difficultyLabel = getDifficultyLabel(recipe.prepTime);
-  const isVegetarian = checkIsVegetarian(recipe.ingredients);
-  
-  return (
-    <div>
-      <h3>{recipe.name}</h3>
-      <p>{caloriesPerServing} cal/serving</p>
-      <span>{difficultyLabel}</span>
-      {isVegetarian && <span>Vegetarian</span>}
-    </div>
-  );
-};
+// RecipeCard.tsx - Component orchestrates
+import { calcCalories, getDifficulty } from './recipeUtils';
+
+export const RecipeCard = ({ recipe }: { recipe: Recipe }) => (
+  <div>
+    {calcCalories(recipe.totalCalories, recipe.servings)} cal/serving - {getDifficulty(recipe.prepTime)}
+  </div>
+);
 ```
 
 ## Critical Rules
 
-- **Any logic that can be extracted as a pure function MUST be extracted**
-- Pure functions: same input → same output, no side effects, no external dependencies
-- Components should focus on rendering and event delegation
-- Aim for 100% coverage on pure utility functions
+- Any extractable logic MUST be a pure function
+- Pure functions: same input → same output, no side effects
+- Components focus on rendering and event delegation
+- 100% coverage on pure utility functions

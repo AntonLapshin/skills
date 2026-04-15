@@ -1,19 +1,15 @@
 # SKILL: React + TypeScript + TailwindCSS + Storybook
 
-## Context
-
-Use this SKILL when creating a new React frontend project or working on an existing one with this tech stack.
+Use for React projects with this tech stack.
 
 ## Requirements
 
-- **React**: Use functional components with hooks
-- **TypeScript**: Strict mode enabled, explicit types for props and return values
-- **TailwindCSS**: Utility-first styling, consistent design tokens via `tailwind.config.js`
-- **Storybook**: All visual components must have corresponding stories
+- **React**: Functional components with hooks only
+- **TypeScript**: Strict mode, explicit prop types
+- **TailwindCSS**: Utility-first styling, design tokens in `tailwind.config.js`
+- **Storybook**: Every visual component has stories
 
-## Examples
-
-### Component Structure
+## Example: Component
 
 ```tsx
 // components/Button/Button.tsx
@@ -25,54 +21,30 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-export const Button = ({
-  variant,
-  size,
-  children,
-  onClick,
-  disabled = false,
-}: ButtonProps) => {
-  const baseClasses = 'rounded font-medium transition-colors';
-  const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
-  };
-  const sizeClasses = {
-    sm: 'px-2 py-1 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg',
-  };
+export const Button = ({ variant, size, children, onClick, disabled = false }: ButtonProps) => {
+  const base = 'rounded font-medium transition-colors';
+  const variants = { primary: 'bg-blue-600 text-white', secondary: 'bg-gray-200 text-gray-800' };
+  const sizes = { sm: 'px-2 py-1 text-sm', md: 'px-4 py-2 text-base', lg: 'px-6 py-3 text-lg' };
 
   return (
-    <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button className={`${base} ${variants[variant]} ${sizes[size]}`} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );
 };
 ```
 
-### Storybook Story
+## Example: Story
 
 ```tsx
-// components/Button/Button.stories.tsx
-import { Button } from './Button';
-
-export const Primary = () => {
-  return <Button variant="primary" size="md">Click me</Button>;
-};
-
-export const Secondary = () => {
-  return <Button variant="secondary" size="md">Click me</Button>;
-};
+// Button.stories.tsx
+export const Primary = () => <Button variant="primary" size="md">Click</Button>;
+export const Secondary = () => <Button variant="secondary" size="md">Click</Button>;
 ```
 
 ## Critical Rules
 
-- Always use TypeScript strict mode
-- Use Tailwind utility classes directly in components (no CSS-in-JS)
-- Create Storybook stories for every visual component
-- Follow atomic design principles (atoms → molecules → organisms)
+- TypeScript strict mode always
+- Tailwind utility classes directly in JSX (no CSS-in-JS)
+- Every visual component has stories
+- Follow atomic design: atoms → molecules → organisms
