@@ -1,6 +1,9 @@
-# SKILL: Unit Testing with Pure Functions
+---
+name: testing-pure-functions
+description: Write unit tests by extracting logic into pure functions for fast, deterministic testing. Use when creating testable utility functions that have no side effects and produce consistent outputs for given inputs.
+---
 
-Use when writing unit tests. Extract all testable logic into pure functions.
+# Unit Testing with Pure Functions
 
 ## Requirements
 

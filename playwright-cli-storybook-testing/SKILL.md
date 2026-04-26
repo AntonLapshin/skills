@@ -1,6 +1,9 @@
-# SKILL: Playwright CLI + Storybook Testing
+---
+name: testing-storybook-playwright
+description: Test frontend components interactively by combining Storybook with Playwright CLI. Use when verifying visual components, testing responsive behavior, or validating interaction states in Storybook stories.
+---
 
-Use when testing frontend features. Launch Storybook, then use `playwright-cli` to interactively test stories.
+# Playwright CLI + Storybook Testing
 
 ## Requirements
 

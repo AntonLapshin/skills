@@ -1,6 +1,9 @@
-# SKILL: React + TypeScript + TailwindCSS + Storybook
+---
+name: building-react-components
+description: Build React components with TypeScript, TailwindCSS, and Storybook. Use when developing React applications using functional components, strict TypeScript, utility-first CSS, and atomic design principles.
+---
 
-Use for React projects with this tech stack.
+# React + TypeScript + TailwindCSS + Storybook
 
 ## Requirements
 

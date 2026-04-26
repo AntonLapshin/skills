@@ -1,6 +1,9 @@
-# SKILL: Design System with Atom Components
+---
+name: design-system-atoms
+description: Create reusable UI components using atomic design principles. Use when building React components with TypeScript, starting with atoms and composing into molecules, organisms, templates, and pages.
+---
 
-Use when creating new UI components. Start with atoms to build a reusable design system.
+# Design System with Atom Components
 
 ## Requirements
 

@@ -1,6 +1,9 @@
-# SKILL: Side Effects Context Pattern
+---
+name: managing-side-effects
+description: Manage side effects through a context pattern enabling easy mocking in tests and Storybook. Use when implementing API calls or external integrations that need to be mocked for testing or story isolation.
+---
 
-Use for all side effects (API calls, external integrations). Enables mocking in tests and Storybook.
+# Side Effects Context Pattern
 
 ## Pattern Steps
 

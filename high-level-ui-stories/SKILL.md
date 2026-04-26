@@ -1,6 +1,9 @@
-# SKILL: High-Level UI Stories with Mocked Side Effects
+---
+name: creating-ui-stories
+description: Create Storybook stories for organisms and pages with mocked side effects using ContextSideEffectsProvider. Use when writing stories that need to demonstrate loading, success, error, and empty states without real API calls.
+---
 
-Use when creating stories for organisms/pages. Wrap components with `ContextSideEffectsProvider` to mock side effects.
+# High-Level UI Stories with Mocked Side Effects
 
 ## Requirements
 
